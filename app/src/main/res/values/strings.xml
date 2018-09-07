@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">IMGY</string>
+    <string name="emailLabel">Email</string>
+    <string name="emailHint">Enter email...</string>
+    <string name="passwordLabel">Password</string>
+    <string name="passwordHint">Enter password...</string>
+    <string name="signInButton">Sign In</string>
+    <string name="goToRegister">Dont have an account yet? Register!</string>
+    <string name="goToSignIn">Already Have an account? Sign in!</string>
+    <string name="registerButton">Register</string>
+    <string name="repeatPasswordLabel">Repeat Password</string>
+    <string name="title_activity_nav">NavActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
