@@ -10,3 +10,17 @@
 .externalNativeBuild
 
 app/build/
+
+\.idea/caches/build_file_checksums\.ser
+
+\.idea/caches/gradle_models\.ser
+
+\.idea/dictionaries/lukauskovic\.xml
+
+\.idea/gradle\.xml
+
+\.idea/misc\.xml
+
+\.idea/vcs\.xml
+
+gradle/wrapper/gradle-wrapper\.properties
