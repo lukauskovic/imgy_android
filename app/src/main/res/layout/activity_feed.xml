@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Feed">
+    tools:context=".Activities.feed_activity.Feed">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/feedItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/item_progress_bar"
+        />
+
+    <ProgressBar
+        android:id="@+id/item_progress_bar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:visibility="gone" />
 
 
     <include
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         />
 
-</LinearLayout>
+</RelativeLayout>
