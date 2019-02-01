@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.imgy.luka.imgy.Activities.Profile;
 import com.imgy.luka.imgy.Activities.Upload;
@@ -24,6 +26,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
     private BottomNavigationView navigationView;
     private static RecyclerView recyclerView;
     private static RecyclerView.Adapter adapter;
+    private static ProgressBar progressBar;
 
     static ArrayList<FeedItem> items = null;
 
@@ -32,6 +35,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
         initialiseUI();
+        progressBar.setVisibility(View.VISIBLE);
         new GetFeedItems(Feed.this).execute(1);
     }
 
@@ -42,11 +46,13 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.feedItems);
         recyclerView.setLayoutManager(linearLayoutManager);
+        progressBar = (ProgressBar) findViewById(R.id.item_progress_bar);
     }
 
     public static void initAdapter(Activity activity, ArrayList<FeedItem> data) {
         adapter = new FeedAdapter(activity.getApplicationContext(), data, recyclerView);
         recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
         items = data;
         ((FeedAdapter) adapter).setOnLoadMoreListener(new FeedAdapter.OnLoadMoreListener() {
             @Override

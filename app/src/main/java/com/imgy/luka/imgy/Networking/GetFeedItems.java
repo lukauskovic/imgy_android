@@ -68,7 +68,7 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>>
     }
 
     protected void onProgressUpdate(Integer... progress) {
-        // TODO: 30/01/2019 show progress 
+
     }
 
     protected void onPostExecute(ArrayList<FeedItem> result) {
