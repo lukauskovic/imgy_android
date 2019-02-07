@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.imgy.luka.imgy">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
 
     <application
         android:allowBackup="true"
@@ -10,8 +15,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        tools:ignore="GoogleAppIndexingWarning"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Login">
+        <activity android:name=".activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,17 +25,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.Register">
+        <activity android:name=".activities.Register">
         </activity>
 
-        <activity android:name=".Activities.feed_activity.Feed" >
+        <activity android:name=".activities.feed_activity.Feed" >
         </activity>
 
-        <activity android:name=".Activities.Upload" >
+        <activity android:name=".activities.Upload" >
         </activity>
 
-        <activity android:name=".Activities.Profile" >
+        <activity android:name=".activities.Profile" >
         </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.imgy.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 
