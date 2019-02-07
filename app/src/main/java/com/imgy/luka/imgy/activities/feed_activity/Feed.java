@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.Activities.feed_activity;
+package com.imgy.luka.imgy.activities.feed_activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,14 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.imgy.luka.imgy.Activities.Profile;
-import com.imgy.luka.imgy.Activities.Upload;
-import com.imgy.luka.imgy.Adapters.FeedAdapter;
-import com.imgy.luka.imgy.Networking.GetFeedItems;
-import com.imgy.luka.imgy.Objects.FeedItem;
+import com.imgy.luka.imgy.activities.Profile;
+import com.imgy.luka.imgy.activities.Upload;
+import com.imgy.luka.imgy.adapters.FeedAdapter;
+import com.imgy.luka.imgy.networking.GetFeedItems;
+import com.imgy.luka.imgy.objects.FeedItem;
 import com.imgy.luka.imgy.R;
 
 import java.util.ArrayList;
+
+import static com.imgy.luka.imgy.constants.AppConstants.FEED_TAKE_VALUE;
 
 public class Feed extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -39,7 +41,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         new GetFeedItems(Feed.this).execute(1);
     }
 
-    private void initialiseUI(){
+    private void initialiseUI() {
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setSelectedItemId(R.id.navigation_feed);
@@ -72,6 +74,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
             adapter.notifyItemInserted(items.size());
         }
         ((FeedAdapter) adapter).setLoaded();
+        if (data.size() < FEED_TAKE_VALUE) ((FeedAdapter) adapter).setEndOfTheList();
     }
 
     @Override
