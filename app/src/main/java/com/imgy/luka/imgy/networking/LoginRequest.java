@@ -1,14 +1,11 @@
-package com.imgy.luka.imgy.Networking;
+package com.imgy.luka.imgy.networking;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import com.imgy.luka.imgy.Activities.Login;
-import com.imgy.luka.imgy.Activities.feed_activity.Feed;
-import com.imgy.luka.imgy.Constants.AppConstants;
-import com.imgy.luka.imgy.Utils.DisplayToast;
+import com.imgy.luka.imgy.activities.Login;
+import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -19,7 +16,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-import static com.imgy.luka.imgy.Constants.AppConstants.DEFAULT_ERROR_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
 
 public class LoginRequest extends AsyncTask<String, Integer, Response> {
 

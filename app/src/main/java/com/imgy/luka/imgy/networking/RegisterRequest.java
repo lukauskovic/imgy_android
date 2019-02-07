@@ -1,11 +1,11 @@
-package com.imgy.luka.imgy.Networking;
+package com.imgy.luka.imgy.networking;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import com.imgy.luka.imgy.Activities.Register;
-import com.imgy.luka.imgy.Constants.AppConstants;
-import com.imgy.luka.imgy.Utils.DisplayToast;
+import com.imgy.luka.imgy.activities.Register;
+import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -16,8 +16,8 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-import static com.imgy.luka.imgy.Constants.AppConstants.DEFAULT_ERROR_MESSAGE;
-import static com.imgy.luka.imgy.Constants.AppConstants.EMAIL_ALREADY_REGISTERED_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.EMAIL_ALREADY_REGISTERED_MESSAGE;
 
 public class RegisterRequest extends AsyncTask<String, Integer, Response> {
 

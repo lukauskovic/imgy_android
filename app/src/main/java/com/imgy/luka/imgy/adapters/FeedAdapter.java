@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.Adapters;
+package com.imgy.luka.imgy.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.imgy.luka.imgy.Activities.feed_activity.FeedViewHolder;
-import com.imgy.luka.imgy.Activities.feed_activity.ProgressViewHolder;
+import com.imgy.luka.imgy.activities.feed_activity.FeedViewHolder;
+import com.imgy.luka.imgy.activities.feed_activity.ProgressViewHolder;
 
-import com.imgy.luka.imgy.Objects.FeedItem;
+import com.imgy.luka.imgy.objects.FeedItem;
 import com.imgy.luka.imgy.R;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +24,8 @@ public class FeedAdapter extends RecyclerView.Adapter {
     protected Context context;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
+    private boolean endOfTheList;
+
     private OnLoadMoreListener onLoadMoreListener;
 
     public FeedAdapter(Context context, List<FeedItem> itemList, RecyclerView recyclerView) {
@@ -38,7 +40,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                     totalItemCount = linearLayoutManager.getItemCount();
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
 
-                    if (!loading && totalItemCount <= lastVisibleItem + 3) {
+                    if (!loading && totalItemCount <= lastVisibleItem + 3 && !endOfTheList) {
                         if (onLoadMoreListener != null) {
                             loading = true;
                             onLoadMoreListener.onLoadMore();
@@ -80,7 +82,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
     }
 
     public void setLoad() {
-        loading = false;
+        loading = true;
     }
 
     @Override
@@ -98,5 +100,9 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
     public void setLoaded() {
         loading = false;
+    }
+
+    public void setEndOfTheList() {
+        this.endOfTheList = true;
     }
 }

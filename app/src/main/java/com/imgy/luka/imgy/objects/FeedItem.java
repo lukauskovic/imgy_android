@@ -1,9 +1,6 @@
-package com.imgy.luka.imgy.Objects;
-
-import android.app.LauncherActivity;
+package com.imgy.luka.imgy.objects;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FeedItem {
 

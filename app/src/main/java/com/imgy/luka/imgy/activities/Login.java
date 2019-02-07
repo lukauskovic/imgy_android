@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.Activities;
+package com.imgy.luka.imgy.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,14 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.imgy.luka.imgy.Activities.feed_activity.Feed;
-import com.imgy.luka.imgy.Networking.LoginRequest;
+import com.imgy.luka.imgy.activities.feed_activity.Feed;
+import com.imgy.luka.imgy.networking.LoginRequest;
 import com.imgy.luka.imgy.R;
-import com.imgy.luka.imgy.Utils.DisplayToast;
+import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.Response;
 import org.json.JSONObject;
 
-import static com.imgy.luka.imgy.Constants.AppConstants.DEFAULT_ERROR_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
 
 
 public class Login extends AppCompatActivity implements View.OnClickListener {

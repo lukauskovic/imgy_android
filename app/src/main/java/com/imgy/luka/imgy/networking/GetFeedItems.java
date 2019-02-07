@@ -1,12 +1,12 @@
-package com.imgy.luka.imgy.Networking;
+package com.imgy.luka.imgy.networking;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import com.imgy.luka.imgy.Activities.feed_activity.Feed;
-import com.imgy.luka.imgy.Constants.AppConstants;
-import com.imgy.luka.imgy.Objects.FeedItem;
-import com.imgy.luka.imgy.Utils.DisplayToast;
+import com.imgy.luka.imgy.activities.feed_activity.Feed;
+import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.objects.FeedItem;
+import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -17,7 +17,8 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-import static com.imgy.luka.imgy.Constants.AppConstants.DEFAULT_ERROR_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
+import static com.imgy.luka.imgy.constants.AppConstants.FEED_TAKE_VALUE;
 
 public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>> {
 
@@ -40,7 +41,7 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>>
             Request request = new Request.Builder()
                     .header("Authorization-static", AppConstants.STATIC_TOKEN)
                     .header("Accept-Encoding", "gzip")
-                    .url(AppConstants.URL + "/feed?take=5&page=" + page) // TODO: 30/01/2019 default value take 
+                    .url(AppConstants.URL + "/feed?take=" + FEED_TAKE_VALUE + "&page=" + page)
                     .build();
             Response response = client.newCall(request).execute();
             if (response.code() == 200) {

@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.Utils;
+package com.imgy.luka.imgy.utils;
 
 import android.app.Activity;
 import android.widget.Toast;
