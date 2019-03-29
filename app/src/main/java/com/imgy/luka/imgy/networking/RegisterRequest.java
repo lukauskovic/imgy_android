@@ -58,9 +58,9 @@ public class RegisterRequest extends AsyncTask<String, Integer, Response> {
     }
 
     protected void onPostExecute(Response response) {
-        if (response.code() == 200) {
+        if (response != null && response.code() == 200) {
             Register.onSuccessfulRegistration(response, registerActivity.get());
-        } else if (response.code() == 409) {
+        } else if (response != null && response.code() == 409) {
             new DisplayToast(registerActivity.get(), EMAIL_ALREADY_REGISTERED_MESSAGE);
         } else new DisplayToast(registerActivity.get(), DEFAULT_ERROR_MESSAGE);
     }

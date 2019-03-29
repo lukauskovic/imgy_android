@@ -53,7 +53,7 @@ public class LoginRequest extends AsyncTask<String, Integer, Response> {
     }
 
     protected void onPostExecute(Response response){
-        if (response.code() == 200){
+        if (response != null &&  response.code() == 200){ 
             Login.onSuccessfulLogin(response, loginActivity.get());
         }
         else new DisplayToast(loginActivity.get(), DEFAULT_ERROR_MESSAGE);
