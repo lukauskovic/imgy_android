@@ -35,6 +35,7 @@ public class RegisterRequest extends AsyncTask<String, Integer, Response> {
             String data = new JSONObject()
                     .put("email", strings[0])
                     .put("password", strings[1])
+                    .put("username", strings[2])
                     .toString();
             RequestBody body = new MultipartBuilder()
                     .type(MultipartBuilder.FORM)
@@ -61,7 +62,11 @@ public class RegisterRequest extends AsyncTask<String, Integer, Response> {
         if (response != null && response.code() == 200) {
             Register.onSuccessfulRegistration(response, registerActivity.get());
         } else if (response != null && response.code() == 409) {
-            new DisplayToast(registerActivity.get(), EMAIL_ALREADY_REGISTERED_MESSAGE);
+            try{
+                JSONObject responseBody = new JSONObject(response.body().string());
+                String message = responseBody.getString("message");
+                new DisplayToast(registerActivity.get(), message);
+            } catch (Exception e) {e.printStackTrace();}
         } else new DisplayToast(registerActivity.get(), DEFAULT_ERROR_MESSAGE);
     }
 }

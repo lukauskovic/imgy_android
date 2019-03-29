@@ -7,6 +7,8 @@
     <string name="signInButton">Sign In</string>
     <string name="goToRegister">Dont have an account yet? Register!</string>
     <string name="goToSignIn">Already Have an account? Sign in!</string>
+    <string name="usernameLabel">Username</string>
+    <string name="usernameHint">Enter username...</string>
     <string name="registerButton">Register</string>
     <string name="repeatPasswordLabel">Repeat Password</string>
     <string name="title_activity_nav">NavActivity</string>

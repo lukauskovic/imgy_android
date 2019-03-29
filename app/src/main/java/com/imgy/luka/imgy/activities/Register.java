@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.imgy.luka.imgy.activities.feed_activity.Feed;
 import com.imgy.luka.imgy.networking.RegisterRequest;
 import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.utils.DisplayToast;
@@ -24,6 +23,7 @@ import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
     private EditText emailInput;
+    private EditText usernameInput;
     private EditText passwordInput;
     private EditText repeatPasswordInput;
     private Button registerButton;
@@ -38,6 +38,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     private void initialiseUI() {
         this.emailInput = (EditText) findViewById(R.id.emailInput);
+        this.usernameInput = (EditText) findViewById(R.id.usernameInput);
         this.passwordInput = (EditText) findViewById(R.id.passwordInput);
         this.registerButton = (Button) findViewById(R.id.registerButton);
         this.goToSignInLabel = (TextView) findViewById(R.id.goToSignInLabel);
@@ -53,7 +54,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         } else if (TextUtils.isEmpty(passwordInput.getText().toString())) {
             passwordInput.setError("Please Enter password");
             return false;
-        } else if (TextUtils.isEmpty(repeatPasswordInput.getText().toString())) {
+        } else if (TextUtils.isEmpty(usernameInput.getText().toString())) {
+            passwordInput.setError("Please Enter username");
+            return false;
+        }  else if (TextUtils.isEmpty(repeatPasswordInput.getText().toString())) {
             repeatPasswordInput.setError("Please Repeat password");
             return false;
         } else if (!passwordInput.getText().toString().trim().equals(repeatPasswordInput.getText().toString().trim())) {
@@ -85,8 +89,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             if (!checkFields()) return;
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
+            String username = usernameInput.getText().toString().trim();
             registerButton.setEnabled(false);
-            new RegisterRequest(Register.this).execute(email, password);
+            new RegisterRequest(Register.this).execute(email, password, username);
             registerButton.setEnabled(true);
 
         }
