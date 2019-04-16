@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.imgy.luka.imgy.activities.feed_activity.Feed;
 import com.imgy.luka.imgy.networking.LoginRequest;
 import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.utils.DisplayToast;
@@ -41,7 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             String token = responseBody.getString("token");
             SharedPreferences pref = login.getSharedPreferences("prefs", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString("auth_token", token); // Storing string
+            editor.putString("auth_token", token);
             editor.apply();
             Intent feedIntent = new Intent(login.getApplicationContext(), Feed.class);
             login.startActivity(feedIntent);

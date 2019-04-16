@@ -3,9 +3,9 @@ package com.imgy.luka.imgy.networking;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import com.imgy.luka.imgy.activities.feed_activity.Feed;
+import com.imgy.luka.imgy.activities.Feed;
 import com.imgy.luka.imgy.constants.AppConstants;
-import com.imgy.luka.imgy.objects.FeedItem;
+import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import static com.imgy.luka.imgy.constants.AppConstants.DEFAULT_ERROR_MESSAGE;
 import static com.imgy.luka.imgy.constants.AppConstants.FEED_TAKE_VALUE;
 
-public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>> {
+public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<Item>> {
 
     private OkHttpClient client = new OkHttpClient();
-    private ArrayList<FeedItem> data = new ArrayList<>();
+    private ArrayList<Item> data = new ArrayList<>();
     private final WeakReference<Activity> feedActivity;
     private int page;
 
@@ -32,7 +32,7 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>>
     }
 
     @Override
-    protected ArrayList<FeedItem> doInBackground(Integer... pages) {
+    protected ArrayList<Item> doInBackground(Integer... pages) {
         try {
             page = pages[0];
             String description;
@@ -52,11 +52,11 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>>
                     description = feedItems.getJSONObject(i).getString("description");
                     String user = feedItems.getJSONObject(i).getString("user");
                     JSONObject userObject = new JSONObject(user);
-                    username = userObject.getString("email");
+                    username = userObject.getString("username");
                     imageUrl = feedItems.getJSONObject(i).getString("images");
                     imageUrl = imageUrl.substring(0, imageUrl.length() - 2);
                     imageUrl = imageUrl.substring(2);
-                    data.add(i, new FeedItem(username, imageUrl, description));
+                    data.add(i, new Item(username, imageUrl, description));
                 }
             }
         }
@@ -72,7 +72,7 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<FeedItem>>
 
     }
 
-    protected void onPostExecute(ArrayList<FeedItem> result) {
+    protected void onPostExecute(ArrayList<Item> result) {
         if(result.size() != 0) {
             if (page == 1) Feed.initAdapter(feedActivity.get(), result);
             else Feed.updateAdapter(result);

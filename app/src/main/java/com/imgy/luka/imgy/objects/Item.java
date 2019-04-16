@@ -2,13 +2,13 @@ package com.imgy.luka.imgy.objects;
 
 import java.util.ArrayList;
 
-public class FeedItem {
+public class Item {
 
     private String username;
     private String imageUrl;
     private String description;
 
-    public FeedItem(String username, String imageUrl, String description) {
+    public Item(String username, String imageUrl, String description) {
         this.username = username;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -35,16 +35,6 @@ public class FeedItem {
     }
 
     public void setDescription(String description) { this.description = description; }
-
-    public static ArrayList<FeedItem> initItems() {
-        ArrayList<FeedItem> items = new ArrayList<FeedItem>();
-        items.add(0, new FeedItem("marin123", "pdkmaspdm", "desc1"));
-        items.add(1, new FeedItem("marko_brat", "pdkmaspdm", "desc2"));
-        items.add(2, new FeedItem("burke", "pdkmaspdm", "desc3"));
-        items.add(3, new FeedItem("likcina131", "pdkmaspdm", "desc4"));
-        items.add(4, new FeedItem("brat555", "pdkmaspdm", "desc5"));
-        return items;
-    }
 
 
 }

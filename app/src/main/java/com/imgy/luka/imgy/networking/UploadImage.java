@@ -3,14 +3,10 @@ package com.imgy.luka.imgy.networking;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import com.imgy.luka.imgy.activities.Upload;
-import com.imgy.luka.imgy.activities.feed_activity.Feed;
+import com.imgy.luka.imgy.activities.Feed;
 import com.imgy.luka.imgy.constants.AppConstants;
-import com.imgy.luka.imgy.objects.FeedItem;
 import com.imgy.luka.imgy.utils.DisplayToast;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
