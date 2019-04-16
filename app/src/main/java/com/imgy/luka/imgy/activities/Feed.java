@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.activities.feed_activity;
+package com.imgy.luka.imgy.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,11 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.imgy.luka.imgy.activities.Profile;
-import com.imgy.luka.imgy.activities.Upload;
 import com.imgy.luka.imgy.adapters.FeedAdapter;
 import com.imgy.luka.imgy.networking.GetFeedItems;
-import com.imgy.luka.imgy.objects.FeedItem;
+import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.R;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
     private static RecyclerView.Adapter adapter;
     private static ProgressBar progressBar;
 
-    static ArrayList<FeedItem> items = null;
+    static ArrayList<Item> items = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         progressBar = (ProgressBar) findViewById(R.id.item_progress_bar);
     }
 
-    public static void initAdapter(Activity activity, ArrayList<FeedItem> data) {
+    public static void initAdapter(Activity activity, ArrayList<Item> data) {
         adapter = new FeedAdapter(activity.getApplicationContext(), data, recyclerView);
         recyclerView.setAdapter(adapter);
         progressBar.setVisibility(View.GONE);
@@ -64,7 +62,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         });
     }
 
-    public static void updateAdapter(ArrayList<FeedItem> data) {
+    public static void updateAdapter(ArrayList<Item> data) {
         items.add(null);
         adapter.notifyItemInserted(items.size() - 1);
         items.remove(items.size() - 1);
@@ -85,7 +83,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
                 startActivity(new Intent(this, Upload.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 overridePendingTransition(0, 0);
             } else if (itemId == R.id.navigation_profile) {
-                startActivity(new Intent(this, Profile.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                startActivity(new Intent(this, MyProfile.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 overridePendingTransition(0, 0);
             } else if (itemId == R.id.navigation_feed) {
                 return;

@@ -17,13 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.imgy.luka.imgy.activities.feed_activity.Feed;
 import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.networking.UploadImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -113,7 +111,7 @@ public class Upload extends AppCompatActivity implements BottomNavigationView.On
                 startActivity(new Intent(this, Feed.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 overridePendingTransition(0, 0);
             } else if (itemId == R.id.navigation_profile) {
-                startActivity(new Intent(this, Profile.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                startActivity(new Intent(this, MyProfile.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 overridePendingTransition(0, 0);
             } else if (itemId == R.id.navigation_upload) {
                 return;

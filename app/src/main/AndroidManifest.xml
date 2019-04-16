@@ -4,7 +4,8 @@
     package="com.imgy.luka.imgy">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
 
@@ -28,14 +29,17 @@
         <activity android:name=".activities.Register">
         </activity>
 
-        <activity android:name=".activities.feed_activity.Feed" >
+        <activity android:name=".activities.Feed" >
         </activity>
 
         <activity android:name=".activities.Upload" >
         </activity>
 
-        <activity android:name=".activities.Profile" >
+        <activity android:name=".activities.MyProfile" >
         </activity>
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

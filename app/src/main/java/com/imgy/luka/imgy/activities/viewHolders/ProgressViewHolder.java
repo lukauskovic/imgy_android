@@ -1,4 +1,4 @@
-package com.imgy.luka.imgy.activities.feed_activity;
+package com.imgy.luka.imgy.activities.viewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
