@@ -13,6 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.imgy.luka.imgy.R;
+import com.imgy.luka.imgy.activities.ChangePassword;
 import com.imgy.luka.imgy.activities.Login;
 import com.imgy.luka.imgy.utils.DisplayToast;
 
@@ -85,6 +86,7 @@ public class MyProfileCardViewHolder extends RecyclerView.ViewHolder implements 
 
 
     public void changePassword(){
-        new DisplayToast(profileActivity.get(),"change password");
+        Intent changePasswordIntent = new Intent(profileActivity.get(), ChangePassword.class);
+        profileActivity.get().startActivity(changePasswordIntent);
     }
 }
