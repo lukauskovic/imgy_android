@@ -42,7 +42,6 @@ public class UploadProfilePicture extends AsyncTask<Uri, Integer, Response> {
             Uri imageUri = uris[0];
             File image = new File(imageUri.getPath());
             String data = new JSONObject()
-                    .put("username", "john@doe.com") // fix this on backend
                     .toString();
             RequestBody body = new MultipartBuilder()
                     .type(MultipartBuilder.FORM)
