@@ -53,10 +53,11 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<Item>> {
                     String user = feedItems.getJSONObject(i).getString("user");
                     JSONObject userObject = new JSONObject(user);
                     username = userObject.getString("username");
+                    String userId = userObject.getString("_id");
                     imageUrl = feedItems.getJSONObject(i).getString("images");
                     imageUrl = imageUrl.substring(0, imageUrl.length() - 2);
                     imageUrl = imageUrl.substring(2);
-                    data.add(i, new Item(username, imageUrl, description));
+                    data.add(i, new Item(username, imageUrl, description, userId));
                 }
             }
         }

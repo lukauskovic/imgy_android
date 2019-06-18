@@ -38,6 +38,9 @@
         <activity android:name=".activities.MyProfile" >
         </activity>
 
+        <activity android:name=".activities.PublicProfile" >
+        </activity>
+
         <activity android:name=".activities.ChangePassword">
         </activity>
 

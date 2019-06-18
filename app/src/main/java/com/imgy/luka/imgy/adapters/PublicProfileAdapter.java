@@ -1,7 +1,8 @@
 package com.imgy.luka.imgy.adapters;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,32 +10,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.imgy.luka.imgy.activities.PublicProfile;
-import com.imgy.luka.imgy.activities.Register;
+import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.activities.viewHolders.ItemViewHolder;
+import com.imgy.luka.imgy.activities.viewHolders.MyProfileCardViewHolder;
 import com.imgy.luka.imgy.activities.viewHolders.ProgressViewHolder;
-
+import com.imgy.luka.imgy.activities.viewHolders.PublicProfileCardViewHolder;
 import com.imgy.luka.imgy.constants.AppConstants;
 import com.imgy.luka.imgy.objects.Item;
-import com.imgy.luka.imgy.R;
+import com.imgy.luka.imgy.objects.User;
 import com.squareup.picasso.Picasso;
 
-
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class FeedAdapter extends RecyclerView.Adapter {
+public class PublicProfileAdapter extends RecyclerView.Adapter {
 
     private List<Item> itemList;
-    protected Context context;
+
+    private User user;
+    private final WeakReference<Activity> profileActivity;
     private int firstVisibleItem, totalItemCount;
     private boolean loading;
     private boolean endOfTheList;
 
     private OnLoadMoreListener onLoadMoreListener;
 
-    public FeedAdapter(Context context, List<Item> itemList, RecyclerView recyclerView) {
+    public PublicProfileAdapter(WeakReference<Activity> activity, List<Item> itemList, User user, RecyclerView recyclerView) {
         this.itemList = itemList;
-        this.context = context;
+        this.profileActivity = activity;
+        this.user = user;
         if (itemList.size() < AppConstants.FEED_TAKE_VALUE) setEndOfTheList();
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -43,7 +47,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     totalItemCount = linearLayoutManager.getItemCount();
-                    firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition(); 
+                    firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
 
                     if (!loading && totalItemCount <= firstVisibleItem + 2 && !endOfTheList) {
                         if (onLoadMoreListener != null) {
@@ -58,9 +62,12 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
-        if (i == 1) {
+        if (viewType == 0) {
+            View layoutView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.public_profile_card, viewGroup, false);
+            viewHolder = new PublicProfileCardViewHolder(layoutView, profileActivity);
+        } else if (viewType == 1){
             View layoutView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
             viewHolder = new ItemViewHolder(layoutView);
         } else {
@@ -72,24 +79,30 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return itemList.get(position) != null ? 1 : 0; //fix this
+        if(position == 0) return position;
+        else{
+            return itemList.get(position - 1) != null ? 1 : 0;
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
+            position = position - 1;
             ((ItemViewHolder) holder).username.setText(itemList.get(position).getUsername());
-            ((ItemViewHolder) holder).username.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String userId = itemList.get(holder.getAdapterPosition()).getUserId();
-                    Intent publicProfileIntent = new Intent(context, PublicProfile.class);
-                    publicProfileIntent.putExtra("userId", userId);
-                    context.startActivity(publicProfileIntent);
-                }
-            });
             ((ItemViewHolder) holder).description.setText(itemList.get(position).getDescription());
             Picasso.get().load(itemList.get(position).getImageUrl()).fit().centerInside().into(((ItemViewHolder) holder).image);
+        } else if (holder instanceof PublicProfileCardViewHolder) {
+            ((PublicProfileCardViewHolder) holder).username.setText(user.getUsername());
+            ((PublicProfileCardViewHolder) holder).followingCount.setText(user.getFollowingCount());
+            ((PublicProfileCardViewHolder) holder).followersCount.setText(user.getFollowersCount());
+            ((PublicProfileCardViewHolder) holder).photosCount.setText(user.getPhotosCount());
+            if (user.getProfileImageUrl() != null) Picasso.get().load(user.getProfileImageUrl()).fit().centerInside().into( ((PublicProfileCardViewHolder) holder).profileImage);
+            else {
+                Bitmap profileImage = BitmapFactory.decodeResource(profileActivity.get().getResources(),
+                        R.drawable.default_profile_picture);
+                ((PublicProfileCardViewHolder) holder).profileImage.setImageBitmap(profileImage);
+            }
         } else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
@@ -99,9 +112,13 @@ public class FeedAdapter extends RecyclerView.Adapter {
         loading = true;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public int getItemCount() {
-        return this.itemList.size();
+        return this.itemList.size() + 1;
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
@@ -119,4 +136,5 @@ public class FeedAdapter extends RecyclerView.Adapter {
     public void setEndOfTheList() {
         this.endOfTheList = true;
     }
+
 }

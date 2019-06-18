@@ -7,6 +7,14 @@ public class Item {
     private String username;
     private String imageUrl;
     private String description;
+    private String userId;
+
+    public Item(String username, String imageUrl, String description, String userId) {
+        this.username = username;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.userId = userId;
+    }
 
     public Item(String username, String imageUrl, String description) {
         this.username = username;
@@ -37,4 +45,7 @@ public class Item {
     public void setDescription(String description) { this.description = description; }
 
 
+    public String getUserId() {
+        return userId;
+    }
 }

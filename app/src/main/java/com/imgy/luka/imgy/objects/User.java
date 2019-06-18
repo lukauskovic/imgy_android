@@ -21,6 +21,13 @@ public class User {
         this.photosCount = photosCount;
     }
 
+    public User(String username, String followersCount, String followingCount, String photosCount) {
+        this.username = username;
+        this.followersCount = followersCount;
+        this.followingCount = followingCount;
+        this.photosCount = photosCount;
+    }
+
     public String getEmail() {
         return email;
     }
