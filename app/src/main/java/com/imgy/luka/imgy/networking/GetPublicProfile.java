@@ -60,7 +60,15 @@ public class GetPublicProfile extends AsyncTask<Integer, Integer, ArrayList<Item
                     String followersCount = foundUser.getString("followersCount");
                     String followingCount = foundUser.getString("followingCount");
                     String photosCount = responseBody.getString("foundImagesCount");
-                    user = new User( foundUsername, followersCount, followingCount, photosCount);
+                    String id = foundUser.getString("_id");
+
+                    JSONArray followersJson= foundUser.getJSONArray("followers");
+                    ArrayList<String> followers = new ArrayList<String>();
+                    for (int i = 0; i< followersJson.length(); i++){
+                        followers.add(followersJson.get(i).toString());
+                    }
+
+                    user = new User( id, foundUsername, followersCount, followingCount, photosCount, followers);
                     if(foundUser.has("profileImage")){
                         user.setProfileImageUrl(foundUser.getString("profileImage"));
                     }

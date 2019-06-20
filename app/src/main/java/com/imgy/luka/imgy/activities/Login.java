@@ -38,9 +38,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         try{
             JSONObject responseBody = new JSONObject(response.body().string());
             String token = responseBody.getString("token");
+            String id = responseBody.getString("_id");
             SharedPreferences pref = login.getSharedPreferences("prefs", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("auth_token", token);
+            editor.putString("id",id);
             editor.apply();
             Intent feedIntent = new Intent(login.getApplicationContext(), Feed.class);
             login.startActivity(feedIntent);

@@ -25,7 +25,6 @@ import static com.imgy.luka.imgy.constants.AppConstants.FEED_TAKE_VALUE;
 
 public class PublicProfile extends AppCompatActivity {
 
-    private BottomNavigationView navigationView;
     private static RecyclerView recyclerView;
     private static RecyclerView.Adapter adapter;
     private static User user;
@@ -61,6 +60,12 @@ public class PublicProfile extends AppCompatActivity {
                 new GetPublicProfile(activity.get(), userId).execute((items.size() + 1) / 5 + 1);
             }
         });
+    }
+
+    public static void onSuccessfulFollow(){
+        ((PublicProfileAdapter) adapter).setUser(user);
+        adapter.notifyDataSetChanged();
+
     }
 
     public static void updateAdapter(ArrayList<Item> data) {

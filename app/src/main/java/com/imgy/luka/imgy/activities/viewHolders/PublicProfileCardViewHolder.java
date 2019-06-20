@@ -15,7 +15,9 @@ import com.imgy.luka.imgy.utils.DisplayToast;
 
 import java.lang.ref.WeakReference;
 
-public class PublicProfileCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+import static android.view.View.GONE;
+
+public class PublicProfileCardViewHolder extends RecyclerView.ViewHolder {
 
     public View view;
     public TextView username;
@@ -36,13 +38,21 @@ public class PublicProfileCardViewHolder extends RecyclerView.ViewHolder impleme
         this.profileImage = view.findViewById(R.id.profileImage);
         this.followButton = view.findViewById(R.id.followButton);
         this.photosCount = view.findViewById(R.id.photosCount);
-        followButton.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == followButton){
-            new DisplayToast(publicProfileActivity.get(),"follow");
-        }
+    public void hideFollowButton(){
+        this.followButton.setVisibility(GONE);
     }
+
+    public void followButtonText(){
+        this.followButton.setText("Follow");
+        this.followButton.setEnabled(true);
+    }
+
+    public void unfollowButtonText(){
+        this.followButton.setText("Unfollow");
+        this.followButton.setEnabled(true);
+    }
+
+
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import com.google.gson.JsonArray;
 import com.imgy.luka.imgy.activities.MyProfile;
 import com.imgy.luka.imgy.constants.AppConstants;
 import com.imgy.luka.imgy.objects.Item;
@@ -58,7 +59,15 @@ public class GetMyProfile extends AsyncTask<Integer, Integer, ArrayList<Item>> {
                     String followersCount = foundUser.getString("followersCount");
                     String followingCount = foundUser.getString("followingCount");
                     String photosCount = responseBody.getString("foundImagesCount");
-                    user = new User(foundUserEmail , foundUsername, followersCount, followingCount, photosCount);
+                    String id = foundUser.getString("_id");
+
+                    JSONArray followersJson= foundUser.getJSONArray("followers");
+                    ArrayList<String> followers = new ArrayList<String>();
+                    for (int i = 0; i< followersJson.length(); i++){
+                        followers.add(followersJson.get(i).toString());
+                    }
+
+                    user = new User(id, foundUserEmail , foundUsername, followersCount, followingCount, photosCount, followers);
                     if(foundUser.has("profileImage")){
                         user.setProfileImageUrl(foundUser.getString("profileImage"));
                     }

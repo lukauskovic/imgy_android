@@ -71,9 +71,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         try {
             JSONObject responseBody = new JSONObject(response.body().string());
             String token = responseBody.getString("token");
+            String id = responseBody.getString("_id");
             SharedPreferences pref = register.getSharedPreferences("prefs", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("auth_token", token); // Storing string
+            editor.putString("id", id);
             editor.apply();
             Intent feedIntent = new Intent(register, Feed.class);
             register.startActivity(feedIntent);

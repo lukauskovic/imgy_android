@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class User {
 
+    private String id;
     private String email;
     private String username;
     private String followersCount;
@@ -13,19 +14,23 @@ public class User {
     private ArrayList<String> followers;
     private ArrayList<String> following;
 
-    public User(String email, String username, String followersCount, String followingCount, String photosCount) {
+    public User(String id, String email, String username, String followersCount, String followingCount, String photosCount, ArrayList<String> followers) {
+        this.id = id;
         this.email = email;
         this.username = username;
         this.followersCount = followersCount;
         this.followingCount = followingCount;
         this.photosCount = photosCount;
+        this.followers = followers;
     }
 
-    public User(String username, String followersCount, String followingCount, String photosCount) {
+    public User(String id, String username, String followersCount, String followingCount, String photosCount, ArrayList<String> followers) {
+        this.id = id;
         this.username = username;
         this.followersCount = followersCount;
         this.followingCount = followingCount;
         this.photosCount = photosCount;
+        this.followers = followers;
     }
 
     public String getEmail() {
@@ -90,5 +95,9 @@ public class User {
 
     public void setPhotosCount(String photosCount) {
         this.photosCount = photosCount;
+    }
+
+    public String getId() {
+        return id;
     }
 }

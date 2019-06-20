@@ -1,6 +1,7 @@
 package com.imgy.luka.imgy.adapters;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -12,10 +13,10 @@ import android.view.ViewGroup;
 
 import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.activities.viewHolders.ItemViewHolder;
-import com.imgy.luka.imgy.activities.viewHolders.MyProfileCardViewHolder;
 import com.imgy.luka.imgy.activities.viewHolders.ProgressViewHolder;
 import com.imgy.luka.imgy.activities.viewHolders.PublicProfileCardViewHolder;
 import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.networking.FollowRequest;
 import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.objects.User;
 import com.squareup.picasso.Picasso;
@@ -28,7 +29,7 @@ public class PublicProfileAdapter extends RecyclerView.Adapter {
     private List<Item> itemList;
 
     private User user;
-    private final WeakReference<Activity> profileActivity;
+    private final WeakReference<Activity> publicProfileActivity;
     private int firstVisibleItem, totalItemCount;
     private boolean loading;
     private boolean endOfTheList;
@@ -37,7 +38,7 @@ public class PublicProfileAdapter extends RecyclerView.Adapter {
 
     public PublicProfileAdapter(WeakReference<Activity> activity, List<Item> itemList, User user, RecyclerView recyclerView) {
         this.itemList = itemList;
-        this.profileActivity = activity;
+        this.publicProfileActivity = activity;
         this.user = user;
         if (itemList.size() < AppConstants.FEED_TAKE_VALUE) setEndOfTheList();
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -66,7 +67,7 @@ public class PublicProfileAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder viewHolder = null;
         if (viewType == 0) {
             View layoutView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.public_profile_card, viewGroup, false);
-            viewHolder = new PublicProfileCardViewHolder(layoutView, profileActivity);
+            viewHolder = new PublicProfileCardViewHolder(layoutView, publicProfileActivity);
         } else if (viewType == 1){
             View layoutView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
             viewHolder = new ItemViewHolder(layoutView);
@@ -93,13 +94,29 @@ public class PublicProfileAdapter extends RecyclerView.Adapter {
             ((ItemViewHolder) holder).description.setText(itemList.get(position).getDescription());
             Picasso.get().load(itemList.get(position).getImageUrl()).fit().centerInside().into(((ItemViewHolder) holder).image);
         } else if (holder instanceof PublicProfileCardViewHolder) {
+
+            SharedPreferences pref = publicProfileActivity.get().getSharedPreferences("prefs", 0);
+            String id = pref.getString("id", "");
+
             ((PublicProfileCardViewHolder) holder).username.setText(user.getUsername());
             ((PublicProfileCardViewHolder) holder).followingCount.setText(user.getFollowingCount());
             ((PublicProfileCardViewHolder) holder).followersCount.setText(user.getFollowersCount());
             ((PublicProfileCardViewHolder) holder).photosCount.setText(user.getPhotosCount());
+
+            if (user.getFollowers().contains(id)) ((PublicProfileCardViewHolder) holder).unfollowButtonText();
+            else if(user.getId().equals(id)) ((PublicProfileCardViewHolder) holder).hideFollowButton();
+            else ((PublicProfileCardViewHolder) holder).followButtonText();
+            ((PublicProfileCardViewHolder) holder).followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((PublicProfileCardViewHolder) holder).followButton.setEnabled(false);
+                    new FollowRequest(publicProfileActivity.get()).execute(user.getId());
+                }
+            });
+
             if (user.getProfileImageUrl() != null) Picasso.get().load(user.getProfileImageUrl()).fit().centerInside().into( ((PublicProfileCardViewHolder) holder).profileImage);
             else {
-                Bitmap profileImage = BitmapFactory.decodeResource(profileActivity.get().getResources(),
+                Bitmap profileImage = BitmapFactory.decodeResource(publicProfileActivity.get().getResources(),
                         R.drawable.default_profile_picture);
                 ((PublicProfileCardViewHolder) holder).profileImage.setImageBitmap(profileImage);
             }
