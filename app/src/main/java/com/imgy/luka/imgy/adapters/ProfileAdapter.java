@@ -1,6 +1,7 @@
 package com.imgy.luka.imgy.adapters;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.imgy.luka.imgy.activities.viewHolders.MyProfileCardViewHolder;
 import com.imgy.luka.imgy.activities.viewHolders.ProgressViewHolder;
 
 import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.networking.LikeRequest;
 import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.R;
 import com.imgy.luka.imgy.objects.User;
@@ -88,11 +90,35 @@ public class ProfileAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        SharedPreferences pref = profileActivity.get().getSharedPreferences("prefs", 0);
+        String id = pref.getString("id", "");
         if (holder instanceof ItemViewHolder) {
             position = position - 1;
             ((ItemViewHolder) holder).username.setText(itemList.get(position).getUsername());
             ((ItemViewHolder) holder).description.setText(itemList.get(position).getDescription());
             Picasso.get().load(itemList.get(position).getImageUrl()).fit().centerInside().into(((ItemViewHolder) holder).image);
+            if (itemList.get(position).isLiked(id)){
+                ((ItemViewHolder) holder).likeItem(itemList.get(position).getLikesCount());
+            }
+            else ((ItemViewHolder) holder).unlikeItem(itemList.get(position).getLikesCount());
+            ((ItemViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Item item = itemList.get(holder.getAdapterPosition() - 1);
+                    ((ItemViewHolder) holder).likeButton.setEnabled(false);
+                    new LikeRequest(profileActivity).execute(item.getId());
+                    if (item.isLiked(id)){
+                        item.getLikes().remove(id);
+                        item.setLikesCount(item.getLikesCount() - 1);
+                        ((ItemViewHolder) holder).unlikeItem(item.getLikesCount());
+                    }
+                    else{
+                        item.getLikes().add(id);
+                        item.setLikesCount(item.getLikesCount() + 1);
+                        ((ItemViewHolder) holder).likeItem(item.getLikesCount());
+                    }
+                }
+            });
         } else if (holder instanceof MyProfileCardViewHolder) {
             ((MyProfileCardViewHolder) holder).username.setText(user.getUsername());
             ((MyProfileCardViewHolder) holder).followingCount.setText(user.getFollowingCount());

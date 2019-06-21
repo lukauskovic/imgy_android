@@ -27,8 +27,8 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<Item>> {
     private final WeakReference<Activity> feedActivity;
     private int page;
 
-    public GetFeedItems(Activity feedActivity){
-        this.feedActivity = new WeakReference<>(feedActivity);
+    public GetFeedItems(WeakReference<Activity> feedActivity){
+        this.feedActivity = feedActivity;
     }
 
     @Override
@@ -51,13 +51,21 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<Item>> {
                 for (int i = 0; i < feedItems.length(); i++) {
                     description = feedItems.getJSONObject(i).getString("description");
                     String user = feedItems.getJSONObject(i).getString("user");
+                    Integer likesCount = feedItems.getJSONObject(i).getInt("likesCount");
                     JSONObject userObject = new JSONObject(user);
                     username = userObject.getString("username");
                     String userId = userObject.getString("_id");
+                    String itemId = feedItems.getJSONObject(i).getString("_id");
                     imageUrl = feedItems.getJSONObject(i).getString("images");
                     imageUrl = imageUrl.substring(0, imageUrl.length() - 2);
                     imageUrl = imageUrl.substring(2);
-                    data.add(i, new Item(username, imageUrl, description, userId));
+
+                    JSONArray likesJson = feedItems.getJSONObject(i).getJSONArray("likes");
+                    ArrayList<String> likes = new ArrayList<>();
+                    for (int p = 0; p< likesJson.length(); p++){
+                        likes.add(likesJson.get(p).toString());
+                    }
+                    data.add(i, new Item(itemId, username, imageUrl, description, userId, likesCount, likes));
                 }
             }
         }
@@ -75,7 +83,7 @@ public class GetFeedItems extends AsyncTask<Integer,Integer,ArrayList<Item>> {
 
     protected void onPostExecute(ArrayList<Item> result) {
         if(result.size() != 0) {
-            if (page == 1) Feed.initAdapter(feedActivity.get(), result);
+            if (page == 1) Feed.initAdapter(feedActivity, result);
             else Feed.updateAdapter(result);
         }
 

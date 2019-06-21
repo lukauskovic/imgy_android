@@ -1,7 +1,9 @@
 package com.imgy.luka.imgy.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,26 +17,28 @@ import com.imgy.luka.imgy.activities.viewHolders.ItemViewHolder;
 import com.imgy.luka.imgy.activities.viewHolders.ProgressViewHolder;
 
 import com.imgy.luka.imgy.constants.AppConstants;
+import com.imgy.luka.imgy.networking.LikeRequest;
 import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.R;
 import com.squareup.picasso.Picasso;
 
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter {
 
     private List<Item> itemList;
-    protected Context context;
+    private final WeakReference<Activity> feedActivity;
     private int firstVisibleItem, totalItemCount;
     private boolean loading;
     private boolean endOfTheList;
 
     private OnLoadMoreListener onLoadMoreListener;
 
-    public FeedAdapter(Context context, List<Item> itemList, RecyclerView recyclerView) {
+    public FeedAdapter(WeakReference<Activity> activity, List<Item> itemList, RecyclerView recyclerView) {
         this.itemList = itemList;
-        this.context = context;
+        this.feedActivity = activity;
         if (itemList.size() < AppConstants.FEED_TAKE_VALUE) setEndOfTheList();
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -77,17 +81,43 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        SharedPreferences pref = feedActivity.get().getSharedPreferences("prefs", 0);
+        String id = pref.getString("id", "");
         if (holder instanceof ItemViewHolder) {
             ((ItemViewHolder) holder).username.setText(itemList.get(position).getUsername());
             ((ItemViewHolder) holder).username.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String userId = itemList.get(holder.getAdapterPosition()).getUserId();
-                    Intent publicProfileIntent = new Intent(context, PublicProfile.class);
+                    Intent publicProfileIntent = new Intent(feedActivity.get(), PublicProfile.class);
                     publicProfileIntent.putExtra("userId", userId);
-                    context.startActivity(publicProfileIntent);
+                    feedActivity.get().startActivity(publicProfileIntent);
                 }
             });
+
+            if (itemList.get(position).isLiked(id)){
+                ((ItemViewHolder) holder).likeItem(itemList.get(position).getLikesCount());
+            }
+            else ((ItemViewHolder) holder).unlikeItem(itemList.get(position).getLikesCount());
+            ((ItemViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Item item = itemList.get(holder.getAdapterPosition());
+                    ((ItemViewHolder) holder).likeButton.setEnabled(false);
+                    new LikeRequest(feedActivity).execute(item.getId());
+                    if (item.isLiked(id)){
+                        item.getLikes().remove(id);
+                        item.setLikesCount(item.getLikesCount() - 1);
+                        ((ItemViewHolder) holder).unlikeItem(item.getLikesCount());
+                    }
+                    else{
+                        item.getLikes().add(id);
+                        item.setLikesCount(item.getLikesCount() + 1);
+                        ((ItemViewHolder) holder).likeItem(item.getLikesCount());
+                    }
+                }
+            });
+
             ((ItemViewHolder) holder).description.setText(itemList.get(position).getDescription());
             Picasso.get().load(itemList.get(position).getImageUrl()).fit().centerInside().into(((ItemViewHolder) holder).image);
         } else {

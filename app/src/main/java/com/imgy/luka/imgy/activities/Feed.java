@@ -17,6 +17,7 @@ import com.imgy.luka.imgy.networking.GetFeedItems;
 import com.imgy.luka.imgy.objects.Item;
 import com.imgy.luka.imgy.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import static com.imgy.luka.imgy.constants.AppConstants.FEED_TAKE_VALUE;
@@ -36,7 +37,7 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         setContentView(R.layout.activity_feed);
         initialiseUI();
         progressBar.setVisibility(View.VISIBLE);
-        new GetFeedItems(Feed.this).execute(1);
+        new GetFeedItems(new WeakReference<>(this)).execute(1);
     }
 
     private void initialiseUI() {
@@ -49,8 +50,8 @@ public class Feed extends AppCompatActivity implements BottomNavigationView.OnNa
         progressBar = (ProgressBar) findViewById(R.id.item_progress_bar);
     }
 
-    public static void initAdapter(Activity activity, ArrayList<Item> data) {
-        adapter = new FeedAdapter(activity.getApplicationContext(), data, recyclerView);
+    public static void initAdapter(WeakReference<Activity> activity, ArrayList<Item> data) {
+        adapter = new FeedAdapter(activity , data, recyclerView);
         recyclerView.setAdapter(adapter);
         progressBar.setVisibility(View.GONE);
         items = data;
